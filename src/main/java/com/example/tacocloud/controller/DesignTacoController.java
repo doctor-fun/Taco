@@ -1,23 +1,22 @@
 package com.example.tacocloud.controller;
 
 
+import com.example.tacocloud.dao.IngredientRepository;
 import com.example.tacocloud.model.Ingredient.Type;
 import com.example.tacocloud.model.Ingredient;
 import com.example.tacocloud.model.Taco;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.core.type.filter.TypeFilter;
 
 import javax.validation.Valid;
 
@@ -29,8 +28,16 @@ import javax.validation.Valid;
 //org.slf4j.LoggerFactory.getLogger(DesignTacoController.class)
 @Controller
 @RequestMapping("/design")
+@SessionAttributes("order")//这个注解干嘛的？
 public class DesignTacoController {
+    private final IngredientRepository ingredientRepo;
 
+
+    @Autowired
+    //使用autowired开启自动注入功能，将单列的ingredientRepository注入到这个controller的变量当中
+    public DesignTacoController(IngredientRepository ingredientRepository){
+        this.ingredientRepo=ingredientRepo;
+    }
 
     @ModelAttribute
     //设定model类的属性，一般是从数据库中找一些数据，添加给model
@@ -58,7 +65,14 @@ public class DesignTacoController {
 
     @GetMapping
     public String ShowDesignForm(Model model){
-        model.addAttribute("design", new Taco());
+        List<Ingredient> ingredients=new ArrayList<>();
+        //这一句有点懵
+        ingredientRepo.findAll().forEach(i->ingredients.add(i));
+
+        Type[] types=Ingredient.Type.values();
+        for(Type type:types){
+            model.addAttribute(type.toString().toLowerCase(),filterByType((ingredients,type)))
+        }
         return "design";//view的名字，这个view为浏览器渲染model 一般是resource/templates下的名为design.html的模板文件
     }
 

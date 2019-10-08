@@ -3,6 +3,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //这个配置类是一个特殊的controller，没有其他作用，就是将/和视图home连接起来
+//任何类都可以实现这个接口
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
