@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(HomeController.class)
+//@WebMvcTest(HomeController.class)
 //两个注解一弄，就会homecontroller被注入进来
 
 public class HomeControllerTest {
