@@ -2,8 +2,10 @@ package com.example.tacocloud.controller;
 
 
 import com.example.tacocloud.dao.Interface.IngredientRepository;
+import com.example.tacocloud.dao.Interface.TacoRepository;
 import com.example.tacocloud.model.Ingredient.Type;
 import com.example.tacocloud.model.Ingredient;
+import com.example.tacocloud.model.Order;
 import com.example.tacocloud.model.Taco;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,14 @@ import javax.validation.Valid;
 @SessionAttributes("order")//这个注解干嘛的？
 public class DesignTacoController {
     private  final IngredientRepository ingredientRepo;
-
+    private TacoRepository designRepo;
 
     @Autowired
     //使用autowired开启自动注入功能，将单列的ingredientRepository注入到这个controller的变量当中
-    public DesignTacoController(IngredientRepository ingredientRepo){
+    public DesignTacoController(IngredientRepository ingredientRepo, TacoRepository designRepo){
+
+        this.designRepo=designRepo;
+
         this.ingredientRepo=ingredientRepo;
     }
 
@@ -76,7 +81,19 @@ public class DesignTacoController {
         }
         return "design";//view的名字，这个view为浏览器渲染model 一般是resource/templates下的名为design.html的模板文件
     }
+    @ModelAttribute(name="order")
+    public Order order(){
+            return new Order();
+    }
+    @ModelAttribute(name="taco")
+    public Taco taco(){
+        return new Taco();
+    }
 
+//    在控制器的处理器方法参数上添加 @ModelAttribute 注释可以访问模型中的属性，如果不存在这个模型，则会自动将其实例化，产生一个新的模型。
+//    模型属性还覆盖了来自 HTTP Servlet 请求参数的名称与字段名称匹配的值，
+//    也就是请求参数如果和模型类中的域变量一致，
+//    则会自动将这些请求参数绑定到这个模型对象，这被称为数据绑定，从而避免了解析和转换每个请求参数和表单字段这样的代码
     @PostMapping
     //接收用户对设计的要求
     public String processDesign(@Valid @ModelAttribute("design")  Taco design, Errors errors, Model model){
