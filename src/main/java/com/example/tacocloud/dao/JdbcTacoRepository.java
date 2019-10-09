@@ -35,15 +35,15 @@ public class JdbcTacoRepository implements TacoRepository {
         PreparedStatementCreator psc =
                 new PreparedStatementCreatorFactory(//用于创建能够执行sql的preparedStatement对象，将sql传给sql
                         "insert into Taco (name, createdAt) values (?, ?)",//Taco这张表的name,createdAt的这两列，
-                        //值是
-                        Types.VARCHAR, Types.TIMESTAMP
+
+                        Types.VARCHAR, Types.TIMESTAMP//类型是这两个
                 ).newPreparedStatementCreator(
-                        Arrays.asList(//将taco的name和时间戳以数组的形式加进去
+                        Arrays.asList(//将taco的name和时间戳以数组的形式加进到preparedStatementCreatorFactory
                                 taco.getName(),
                                 new Timestamp(taco.getCreatedAt().getTime())));//时间戳是以秒的形式存进去的
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = new GeneratedKeyHolder();//生成id
         jdbc.update(psc, keyHolder);
-        return keyHolder.getKey().longValue();
+        return keyHolder.getKey().longValue();//返回自增主键的值
     }
     private void saveIngredientToTaco(
             Ingredient ingredient, long tacoId) {
