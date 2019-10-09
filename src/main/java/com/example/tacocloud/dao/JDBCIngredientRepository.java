@@ -1,5 +1,6 @@
 package com.example.tacocloud.dao;
 
+import com.example.tacocloud.dao.Interface.IngredientRepository;
 import com.example.tacocloud.model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,13 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 @Repository
 //By annotating JdbcIngredientRepository with
 //@Repository , you declare that it should be automatically discovered by Spring compo-
 //        nent scanning and instantiated as a bean in the Spring application context.
-public class JDBCIngredientRepository implements IngredientRepository{
+public class JDBCIngredientRepository implements IngredientRepository {
         private JdbcTemplate jdbc;//必须要自己用的Jdbc，
 
         @Autowired

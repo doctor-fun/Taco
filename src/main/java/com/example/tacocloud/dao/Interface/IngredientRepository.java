@@ -1,4 +1,4 @@
-package com.example.tacocloud.dao;
+package com.example.tacocloud.dao.Interface;
 
 import com.example.tacocloud.model.Ingredient;
 

@@ -1,7 +1,7 @@
 package com.example.tacocloud.controller;
 
 
-import com.example.tacocloud.dao.IngredientRepository;
+import com.example.tacocloud.dao.Interface.IngredientRepository;
 import com.example.tacocloud.model.Ingredient.Type;
 import com.example.tacocloud.model.Ingredient;
 import com.example.tacocloud.model.Taco;
@@ -30,12 +30,12 @@ import javax.validation.Valid;
 @RequestMapping("/design")
 @SessionAttributes("order")//这个注解干嘛的？
 public class DesignTacoController {
-    private final IngredientRepository ingredientRepo;
+    private  final IngredientRepository ingredientRepo;
 
 
     @Autowired
     //使用autowired开启自动注入功能，将单列的ingredientRepository注入到这个controller的变量当中
-    public DesignTacoController(IngredientRepository ingredientRepository){
+    public DesignTacoController(IngredientRepository ingredientRepo){
         this.ingredientRepo=ingredientRepo;
     }
 
@@ -71,7 +71,8 @@ public class DesignTacoController {
 
         Type[] types=Ingredient.Type.values();
         for(Type type:types){
-            model.addAttribute(type.toString().toLowerCase(),filterByType((ingredients,type)))
+            model.addAttribute(type.toString().toLowerCase(),
+                    filterByType(ingredients, type));
         }
         return "design";//view的名字，这个view为浏览器渲染model 一般是resource/templates下的名为design.html的模板文件
     }
