@@ -25,7 +25,7 @@ public class JdbcTacoRepository implements TacoRepository {
     public Taco save(Taco taco) {
         long tacoId = saveTacoInfo(taco);//saveTacoInfo会随机生成tacoID，将id返回后
         taco.setId(tacoId);//保存到model中taco中
-        for (Ingredient ingredient : taco.getIngredients()) {
+        for ( Ingredient ingredient : taco.getIngredients()) {
             saveIngredientToTaco(ingredient, tacoId);//将
         }
         return taco;

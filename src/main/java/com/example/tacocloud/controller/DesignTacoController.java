@@ -94,15 +94,23 @@ public class DesignTacoController {
 //    模型属性还覆盖了来自 HTTP Servlet 请求参数的名称与字段名称匹配的值，
 //    也就是请求参数如果和模型类中的域变量一致，
 //    则会自动将这些请求参数绑定到这个模型对象，这被称为数据绑定，从而避免了解析和转换每个请求参数和表单字段这样的代码
+
+
     @PostMapping
     //接收用户对设计的要求
-    public String processDesign(@Valid @ModelAttribute("design")  Taco design, Errors errors, Model model){
+//    The real processing of a taco design happens in the processDesign() method,
+//    which now accepts an Order object as a parameter, in addition to Taco and Errors
+//    objects. The Order parameter is annotated with @ModelAttribute to indicate that its
+//    value should come from the model and that Spring MVC shouldn’t attempt to bind
+//    request parameters to it.
+    public String processDesign(@Valid @ModelAttribute("design")  Taco design, Errors errors, @ModelAttribute Order order){
         if(errors.hasErrors()){
             return "design";
         }
+        Taco saved=designRepo.save(design);
         log.info("Processing design: " + design);
         return "redirect:/orders/current";
-        //页面的Name存到string,其他成分存到List中，这两个一和就是Taco
+        //页面的Name存到string,其他成分存到List中，这两个一合就是Taco
         //收到用户的设计内容后，转发到orders/current的controller用于订单管理
     }
 
