@@ -29,8 +29,8 @@ public class OrderController {
 
 
     @GetMapping("/current")
+         //这里会接收到taco对象，应该放到order对象中
     public String orderForm(){
-        //这里会接收到taco对象，应该放到order对象中
         //model.addAttribute("order", new Order());
         return "orderForm";
     }
