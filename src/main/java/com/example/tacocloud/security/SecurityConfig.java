@@ -7,18 +7,18 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 //关于用户的一些常用的查询都会自动生成
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    No matter which user store you choose, you can configure it by overriding a configure()
-//    method defined in the WebSecurityConfigurerAdapter configuration base class. To
+public class SecurityConfig extends WebSecurityConfigurerAdapter {  a configure()
+//    method defined in the WebSecurityConfigurerAdapter configuration base cla ss . To
 //    get started, you’ll add the following method override to the SecurityConfig class:
-
-
 //    @Override
 //    //在这个类里面指定如何查找用户 配置权限模块
 //    protected  void configure(AuthenticationManagerBuilder auth) throws  Exception{
@@ -36,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery(
                         "select username,password,enabled from Users "+"where username=?")
-                .authoritiesByUsernameQuery("select username,authority from UserAuthorities "+ "where username=?");
+                .authoritiesByUsernameQuery("select username,authority from UserAuthorities "+ "where username=?")
+                .passwordEncoder(new SCryptPasswordEncoder);
                 //说明还有张授权表
                 //团队表 group id,group name, group授权
                 //用户权限表 ：用户名，授权等级
