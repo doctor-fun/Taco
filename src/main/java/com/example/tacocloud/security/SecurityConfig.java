@@ -77,7 +77,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/design","/orders").access("hasRole(ROLE_USER)")//这两个链接应该要有ROLE_USER的角色
                 .antMatchers("/","/**").access("permitAll()")
 
+
+//        关于此登录页面的主要注意事项是其登录的路径以及用户名和密码字段的名称。
+//        默认情况下，Spring Security在/
+//        login侦听登录请求，并期望将username和password字段命名为username和password。
+//        但是，这是可配置的。 例如，以下配置自定义路径和字段名称
+                .and()      //and（）方法表示您已完成授权配置，并准备应用一些其他HTTP配置。
+                .formLogin()  //用来替换spring security的login页面
+                .loginPage("/login")//页面名称为login.html
+//                .loginProcessingUrl("/authenticate")//用/authenticate访问/login
+//                .usernameParameter("user")//数据库的用户名字段改成user
+//                .passwordParameter("pwd");//数据库的密码字段名改成pwd
                 .and()
+                .logout()
+                .logoutSuccessUrl("/")
+
+                .and()
+                .csrf()
+                .ignoringAntMatchers("/h2-console/**")
+
+
+
     }
 
 }
