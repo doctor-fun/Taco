@@ -4,7 +4,9 @@ import com.example.tacocloud.dao.Interface.OrderRepository;
 import com.example.tacocloud.model.Order;
 import com.example.tacocloud.security.model.User;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,16 +21,21 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
 
+
 @Slf4j
 @Controller
 @RequestMapping ("/orders")
 @SessionAttributes("order")
+@ConfigurationProperties(prefix="taco.orders")//when setting the pageSize property, you need to use a configuration property named
+//taco.orders.pageSize
+//在applicaiton.yml中定义每页实际显示数据
 public class OrderController {
 
     private OrderRepository orderRepo;
     public OrderController(OrderRepository orderRepo){
         this.orderRepo=orderRepo;
     }
+
 
 
 
@@ -54,9 +61,20 @@ public class OrderController {
         log.info("Order submitted: " +order);
         return "redirect:/";
     }
+//    @GetMapping
+//    public String orderForUser(@AuthenticationPrincipal User user, Model model){
+//        model.addAttribute("orders",orderRepo.findByUserOrderByPlacedAtDesc(user));
+//        return "orderList";
+//    }
+    //带分页
+    private  int pageSize=20;
+    public void setPageSize(int pageSize){
+        this.pageSize=pageSize;
+    }
     @GetMapping
-    public String orderForUser(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("orders",orderRepo.findByUserOrderByPlacedAtDesc(user));
+    public String ordersForUser(@AuthenticationPrincipal User user, Model model){
+        Pageable pageable= PageRequest.of(0,pageSize);//设置每页的显示第0页接受20个结果
+        model.addAttribute("orders",orderRepo.findByUserOrderByPlacedAtDesc(user,pageable));
         return "orderList";
     }
 }

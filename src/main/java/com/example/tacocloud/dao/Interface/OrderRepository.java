@@ -3,6 +3,7 @@ package com.example.tacocloud.dao.Interface;
 import com.example.tacocloud.model.Order;
 import com.example.tacocloud.security.model.User;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 
@@ -20,6 +21,10 @@ public interface OrderRepository extends CrudRepository<Order,Long> {
 //    //count,read,find,get动词
 //    @Query("Order o where o.deliveryCity='Seattle'")
 //    List<Order> readOrdersDeliveredInSeattle();
-    List<Order>  findByUserOrderByPlacedAtDesc(User user);
+
+
+        // tag::findByUser_paged[]
+        List<Order> findByUserOrderByPlacedAtDesc(
+                User user, Pageable pageable);
 
 }
