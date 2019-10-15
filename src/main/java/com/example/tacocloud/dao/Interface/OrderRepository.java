@@ -1,10 +1,11 @@
 package com.example.tacocloud.dao.Interface;
 
 import com.example.tacocloud.model.Order;
-import org.springframework.data.jpa.repository.Query;
+import com.example.tacocloud.security.model.User;
+
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.Date;
+
 import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order,Long> {
@@ -19,5 +20,6 @@ public interface OrderRepository extends CrudRepository<Order,Long> {
 //    //count,read,find,get动词
 //    @Query("Order o where o.deliveryCity='Seattle'")
 //    List<Order> readOrdersDeliveredInSeattle();
+    List<Order>  findByUserOrderByPlacedAtDesc(User user);
 
 }

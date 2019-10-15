@@ -1,5 +1,6 @@
 package com.example.tacocloud.model;
 
+import com.example.tacocloud.security.model.User;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
@@ -44,6 +45,10 @@ public class Order implements Serializable {
     //日期0*/**为主
     @Pattern(regexp = "^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",message="Must be formatted MM/YY")
     private String ccExpiration;
+
+    //*用户与订单做绑定*每个用户可以用多个订单
+    @ManyToOne
+    private User user;
 
 
     //3位有效数字，没有小数点？
