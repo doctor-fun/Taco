@@ -3,6 +3,8 @@ server:
 # Spring Boot自动配置的bean都可以通过从Spring环境中提取的属性进行配置。
 #  作为一个简单的示例，假设您希望应用程序的基础servlet容器在默认端口8080以外的某个端口上侦听请求。为此，请通过在src / main /中设置server.port属性来指定其他端口。
 spring:
+  profiles: prod
+#上面的意思是application-prod.properties中取得相关datasource的数据，如果没有active:属性，就不行
   datasource:
     url: jdbc:mysql://localhost/tacocloud
     username: tacodb
@@ -10,14 +12,22 @@ spring:
 #  自动配置DataSource bean时，Spring Boot使用此连接数据。
 #  如果在类路径上可用，则将使用Tomcat的JDBC连接池来池化DataSource bean。
 #  如果没有，Spring Boot会在类路径中查找并使用以下其他连接池实现之一：
-Logging:
-  path: /var/logs/
-  #写到/var/logs目录，以TacoCloud.log为名
-  file: TacoCloud.log
-  level: WARN
-  org:
-    springframework:
-      sercurity: DEBUG
+#spring:
+#  security:
+#    user:
+#      name: buzz
+#      password: infinity
+
 taco:
   orders:
     pageSize: 10
+
+
+  discount:
+    codes:
+      abcdef: 10
+
+
+logging:
+  level:
+    tacos: WARN
